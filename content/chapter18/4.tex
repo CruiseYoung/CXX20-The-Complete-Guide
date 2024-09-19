@@ -96,18 +96,18 @@ constexpr bool isConstEval() {
 bool g1 = isConstEval(); // true
 const bool g2 = isConstEval(); // true
 static bool g3 = isConstEval(); // true
-static int g4 = g1 + isConstEval(); // false
+static int g4 = g1 + isConstEval(); // true + false
 
 int main()
 {
 	bool l1 = isConstEval(); // false
 	const bool l2 = isConstEval(); // true
 	static bool l3 = isConstEval(); // true
-	int l4 = g1 + isConstEval(); // false
-	const int l5 = g1 + isConstEval(); // false
-	static int l6 = g1 + isConstEval(); // false
-	int l7 = isConstEval() + isConstEval(); // false
-	const auto l8 = isConstEval() + 42 + isConstEval(); // true
+	int l4 = g1 + isConstEval(); // true + false
+	const int l5 = g1 + isConstEval(); // true + false
+	static int l6 = g1 + isConstEval(); // true + false
+	int l7 = isConstEval() + isConstEval(); // false + false
+	const auto l8 = isConstEval() + 42 + isConstEval(); // true + 42 + true
 }
 \end{cpp}
 
@@ -142,18 +142,19 @@ void foo()
 
 	static bool sb1 = runtimeFunc(); // false
 	static bool sb2 = constexprFunc(); // true
-	static bool ab3 = constevalFunc(); // true
-	const bool cb1 = runtimeFunc(); // ERROR
+	static bool sb3 = constevalFunc(); // true
+	constexpr bool cb0 = runtimeFunc();    // ERROR
+	const bool cb1 = runtimeFunc(); // false
 	const bool cb2 = constexprFunc(); // true
 	const bool cb3 = constevalFunc(); // true
 
 	int y = 42;
-	static bool sb4 = y + runtimeFunc(); // function yields false
-	static bool sb5 = y + constexprFunc(); // function yields false
-	static bool ab6 = y + constevalFunc(); // function yields true
-	const bool cb4 = y + runtimeFunc(); // function yields false
-	const bool cb5 = y + constexprFunc(); // function yields false
-	const bool cb6 = y + constevalFunc(); // function yields true
+	static int sb4 = y + runtimeFunc(); // 42 + false
+	static int sb5 = y + constexprFunc(); // 42 + false
+	static int sb6 = y + constevalFunc(); // 42 + true
+	const int cb4 = y + runtimeFunc(); // 42 + false
+	const int cb5 = y + constexprFunc(); // 42 + false
+	const int cb6 = y + constevalFunc(); // 42 + false
 }
 \end{cpp}
 
@@ -223,8 +224,8 @@ C++20标准中，有一个有趣的例子来说明如何使用std::is\_constant\
 
 \begin{cpp}
 int sz = 10;
-constexpr bool sz1 = std::is_constant_evaluated() ? 20 : sz; // true, so 20
-constexpr bool sz2 = std::is_constant_evaluated() ? sz : 20; // false, so ERROR
+constexpr int sz1 = std::is_constant_evaluated() ? 20 : sz; // true, so 20
+constexpr int sz2 = std::is_constant_evaluated() ? sz : 20; // ERROR
 \end{cpp}
 
 这种行为的原因如下所示:
@@ -238,7 +239,7 @@ sz1和sz2的初始化要么是静态初始化，要么是动态初始化。
 
 \begin{itemize}
 \item
-对于sz1，这是成功的。结果是1，这是一个常数，所以sz1是一个用20初始化的常数。
+对于sz1，这是成功的。结果是20，这是一个常数，所以sz1是一个用20初始化的常数。
 
 \item
 对于sz2，结果是sz，不是常数。因此，sz2(理论上)是动态初始化的，先前的结果将丢弃，并使用std::is\_constant\_evaluate()对初始化器进行计算，结果反而产生false，则初始化sz2的表达式也是20。
@@ -251,8 +252,8 @@ sz1和sz2的初始化要么是静态初始化，要么是动态初始化。
 
 \begin{cpp}
 int sz = 10;
-const bool sz1 = std::is_constant_evaluated() ? 20 : sz; // true, so 20
-const bool sz2 = std::is_constant_evaluated() ? sz : 20; // false, so also 20
+const int sz1 = std::is_constant_evaluated() ? 20 : sz; // true, so 20
+const int sz2 = std::is_constant_evaluated() ? sz : 20; // also 20
 
 double arr1[sz1]; // OK
 double arr2[sz2]; // may or may not compile

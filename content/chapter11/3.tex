@@ -36,10 +36,10 @@ C++20引入了更多的时间段类型，包括天、周、月和年。表“C++
 \textbf{seconds}      & 1,000 milliseconds      & \textbf{s}       & \textbf{s}               \\ \hline
 \textbf{minutes}      & 60 seconds              & \textbf{min}     & \textbf{min}             \\ \hline
 \textbf{hours}        & 60 minutes              & \textbf{h}       & \textbf{h}               \\ \hline
-\textbf{days}         & 24 hours                & \textbf{d}       & \textbf{d}               \\ \hline
+\textbf{day}          & 24 hours                & \textbf{}        & \textbf{d}               \\ \hline
 \textbf{weeks}        & 7 days                  & \textbf{}        & \textbf{{[}604800{]}s}   \\ \hline
-\textbf{months}       & 30.436875 days          & \textbf{}        & \textbf{{[}2629746{]}s}  \\ \hline
-\textbf{years}        & 365.2425 days           & \textbf{y}       & \textbf{{[}31556952{]}s} \\ \hline
+\textbf{month}        & 30.436875 days          & \textbf{}        & \textbf{{[}2629746{]}s}  \\ \hline
+\textbf{year}         & 365.2425 days           & \textbf{}        & \textbf{{[}31556952{]}s} \\ \hline
 \end{longtable}
 
 \begin{center}
@@ -274,7 +274,7 @@ chrono不对一周的第一天做任何假设，所以无法在工作日之间�
 % Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
 \begin{longtable}[c]{|l|l|l|l|l|l|}
 \hline
-\textbf{类型} & \textbf{++/--} & \textbf{增/减} & \textbf{-(差.)} & \textbf{==} & \textbf{\textless{}/\textless{}=\textgreater{}} \\ \hline
+\textbf{类型} & \textbf{++/--} & \textbf{增/减} & \textbf{-(差)} & \textbf{==} & \textbf{\textless{}/\textless{}=\textgreater{}} \\ \hline
 \endfirsthead
 %
 \endhead
@@ -383,7 +383,7 @@ process(hms.hours(), hms.minutes()); // pass hours and minutes
 \begin{cpp}
 auto tp = getStartTime(); // process and yield some timepoint
 // convert time to data structure for attributes:
-std::chrono::hh_mm_ss hms{tp - std::chrono::floor<std::chrono:days>(tp)};
+std::chrono::hh_mm_ss hms{tp - std::chrono::floor<std::chrono::days>(tp)};
 process(hms.hours(), hms.minutes()); // pass hours and minutes
 \end{cpp}
 
@@ -470,7 +470,7 @@ std::chrono::is\_am(h)       & h是否为0到11之间的小时值  \\ \hline
 %
 std::chrono::is\_pm(h)       & h是否为12到23之间的小时值 \\ \hline
 std::chrono::make12(h)       & 生成小时值h的12小时等价值   \\ \hline
-std::chrono::make24(h, toPM) & 生成小时值h的24小时等价值   \\ \hline
+std::chrono::make24(h, isPM) & 生成小时值h的24小时等价值   \\ \hline
 \end{longtable}
 
 \begin{center}

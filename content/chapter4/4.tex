@@ -281,10 +281,12 @@ template<typename T>
 \item
 第一个需求中，需求在对类型为T的对象使用运算符\&时满足std::input\_or\_output\_iterator的概念(std::input\_or\_output\_iterator<decltype(\&x)>产生true)。
 
-也可以这样指定:
+要求运算符 & 真正产生原始指针，你需要一个必要类型特征的概念：
 
 \begin{cpp}
-{ &x } -> std::is_pointer_v<>;
+template<typename T> concept IsPointer = std::is_pointer_v<T>;
+ ...
+   { &x } -> IsPointer;
 \end{cpp}
 
 \item

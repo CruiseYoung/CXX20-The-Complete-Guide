@@ -31,7 +31,7 @@ CORO 3 end
 
 以下是协程定义的完整代码:
 
-\filename{lib/atomicwait.cpp}
+\filename{coro/coro.hpp}
 
 \begin{cpp}
 #include <iostream>
@@ -93,7 +93,7 @@ int main()
 }
 \end{cpp}
 
-初始化协程后，产生协程接口coroTask，启动一个循环，在协程挂起后一次再次恢复协程:
+初始化协程后，产生协程接口coroTask，启动一个循环，在协程挂起后，一次又一次地恢复协程:
 
 \begin{cpp}
 auto coroTask = coro(3); // initialize coroutine
@@ -294,7 +294,7 @@ CoroTask coro(const int& max)
 
 问题是，传递一个临时对象(甚至可能是一个文字对象)会创建未定义行为。可能会看到它，也可能不会看到它，这取决于平台、编译器设置和其他代码。例如，考虑使用如下方式调用协程:
 
-\filename{coro/cororef.hpp}
+\filename{coro/cororef.cpp}
 
 \begin{cpp}
 #include <iostream>
@@ -437,7 +437,7 @@ coro()函数体中的print语句永远不会调用。
 coro();
 \end{cpp}
 
-只初始化协程并立即挂起它，Coro()永远不会恢复。其无法恢复，因为返回的协程接口甚至没有使用。外部协程的resume()不会自动恢复任何内部协程。
+只初始化协程并立即挂起它，coro()永远不会恢复。其无法恢复，因为返回的协程接口甚至没有使用。外部协程的resume()不会自动恢复任何内部协程。
 
 为了在使用协程(如函数)时至少获得编译器警告，类CoroTask将使用[[nodiscard]]声明。
 
@@ -503,7 +503,7 @@ MAIN: callCoro() suspended
 MAIN: callCoro() done
 \end{shell}
 
-callCoro()初始化coro()之后，coro()只恢复一次，所以只调用它的第一部分。之后，coro()的挂起将控制流传输回callCoro()，然后callCoro()挂起自己，则控制流返回到main()。当main()恢复callCoro()时，程序完成callCoro()，而Coro()永远不会完成。
+callCoro()初始化coro()之后，coro()只恢复一次，所以只调用它的第一部分。之后，coro()的挂起将控制流传输回callCoro()，然后callCoro()挂起自己，则控制流返回到main()。当main()恢复callCoro()时，程序完成callCoro()，而coro()永远不会完成。
 
 \mySamllsection{委托resume()}
 
@@ -569,7 +569,7 @@ public:
 	// initialize members for state and customization:
 	struct promise_type; // definition later in corotaskpromise.hpp
 	using CoroHdl = std::coroutine_handle<promise_type>;
-	private:
+private:
 	CoroHdl hdl; // native coroutine handle
 
 public:
@@ -696,7 +696,7 @@ bool resume() const {
 
 成员函数done()由原生协程句柄提供，就是为了这个目的。
 
-协程调用者的接口完全包装了原生协程句柄及其API，我们决定调用者如何处理协程。可以使用不同的函数名，甚至操作符，或者分割调用以恢复和检查结束。稍后，将看到一些示例，其中迭代协程在每次挂起时交付的值，甚至可以将值发送回协程，并且可以提供一个API将协程置于不同的上下文中。
+协程调用者的接口完全包装了原生协程句柄及其API，我们决定调用者如何处理协程。可以使用不同的函数名，甚至操作符，或者分割恢复和检查结束的调用。稍后，将看到一些示例，其中迭代协程在每次挂起时传递的值，甚至可以将值发送回协程，并且可以提供一个API将协程置于不同的上下文中。
 
 最后，包含了一个头文件，里面有promise类型的定义:
 
@@ -715,7 +715,7 @@ bool resume() const {
 定义如何创建或获取协程的返回值(通常包括创建协程句柄)
 
 \item
-决定协同程序是应该在开始还是结束时挂起
+决定协程在开始或结束时是否应挂起
 
 \item
 处理协程调用者与协程之间交换的值
@@ -977,7 +977,7 @@ class CoroTask {
 };
 \end{cpp}
 
-然而，不能移动协程(例如将它们存储在容器中)，所以支持移动语义可能有意义，但应该确保已移动的对象不再引用协程，并且获得新值的协程会破坏旧值:
+然而，这意味着不能移动协程(例如将它们存储在容器中)。因此支持移动语义可能是有意义的，但应该确保已移动的对象不再引用协程，并且获得新值的协程会破坏旧值:
 
 \begin{cpp}
 class CoroTask {

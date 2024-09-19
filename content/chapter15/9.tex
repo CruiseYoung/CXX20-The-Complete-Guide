@@ -350,11 +350,11 @@ public:
 
 	void runTask(CoroPoolTask&& coroTask) noexcept {
 		auto hdl = std::exchange(coroTask.hdl, nullptr); // pool takes ownership of hdl
-		if (coroTask.hdl.done()) {
-			coroTask.hdl.destroy(); // OOPS, a done() coroutine was passed
+		if (hdl.done()) {
+			hdl.destroy(); // OOPS, a done() coroutine was passed
 		}
 		else {
-			schedule coroutine in the pool
+			runCoro(hdl);  // schedule coroutine in the pool
 		}
 	}
 
@@ -469,7 +469,7 @@ class [[nodiscard]] CoroPoolTask
 \end{cpp}
 
 \item
-每个协程都有一个可选持续的成员:
+每个协程都有一个可选延续的成员:
 
 \begin{cpp}
 class [[nodiscard]] CoroPoolTask
@@ -500,7 +500,7 @@ class [[nodiscard]] CoroPoolTask
 \end{cpp}
 
 \item
-每个协程都有一个co\_await()运算符，则co\_await任务()使用一个特殊的awaiter，因此co\_await在将传递的协程调度到池中，并以当前协程作为可持续成员后挂起当前协程。
+每个协程都有一个co\_await()运算符，则co\_await任务()使用一个特殊的awaiter，因此co\_await在将传递的协程调度到池中，并以当前协程作为延续后挂起当前协程。
 \end{itemize}
 
 下面是实现的操作符co\_await()的工作原理:
@@ -548,10 +548,10 @@ print()作为协程调用并初始化。
 对于返回的CoroPoolTask类型的协程接口，调用操作符co\_await()。
 
 \item
-操作符co\_await()接受用于初始化CoAwaitAwaiter类型的awaiter的句柄，所以新的协程print()将成为该await而的成员newwhdl。
+操作符co\_await()接受用于初始化CoAwaitAwaiter类型的awaiter的句柄，所以新的协程print()将成为该await而的成员newHdl。
 
 \item
-std::exchange()可确保在初始化的协程接口中，句柄HDL变为nullptr，这样析构函数就不会调用destroy()。
+std::exchange()可确保在初始化的协程接口中，句柄hdl变为nullptr，这样析构函数就不会调用destroy()。
 
 \item
 runAsync()使用由操作符co\_await()初始化的awaiter挂起，该操作符以协同程序runAsync()的句柄作为参数调用await\_suspend()。

@@ -247,7 +247,11 @@ class CoroTaskSub {
 		}
 		// find deepest sub-coroutine not done yet:
 		CoroHdl innerHdl = hdl;
-		while (innerHdl.promise().subHdl && !innerHdl.promise().subHdl.done()) {
+		while (innerHdl.promise().subHdl) {
+			if (innerHdl.promise().subHdl.done()) {
+				innerHdl.promise().subHdl = nullptr; // remove sub-coroutine if done
+				break;
+			}
 			innerHdl = innerHdl.promise().subHdl;
 		}
 		innerHdl.resume(); // RESUME
@@ -258,7 +262,7 @@ class CoroTaskSub {
 \end{cpp}
 \end{itemize}
 
-coro/corottasksub.hpp中为完整的代码。
+coro/corotasksub.hpp中为完整的代码。
 
 有了这个，就可以做以下事情了:
 

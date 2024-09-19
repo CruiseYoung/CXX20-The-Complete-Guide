@@ -60,7 +60,7 @@ struct promise_type {
 
 协程可以这样使用:
 
-\filename{coro/coyield.hpp}
+\filename{coro/coyield.cpp}
 
 \begin{cpp}
 #include "coyield.hpp"
@@ -267,7 +267,7 @@ public:
 				}
 			}
 		}
-		int operator*() const {
+		T operator*() const {
 			assert(hdl != nullptr);
 			return hdl.promise().coroValue;
 		}

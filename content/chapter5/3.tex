@@ -385,7 +385,7 @@ std::iter\_value\_t<P>必须有效，该类型不必支持操作符->。
 有了这个概念，以下代码则有效:
 
 \begin{cpp}
-void foo(InP inPos, OutP, outPos) {
+void foo(InP inPos, OutP outPos) {
 	*outPos = std::move(*inPos);
 }
 \end{cpp}
@@ -411,7 +411,7 @@ std::indirectly\_writable满足从InP值到OutP的右值引用
 有了这个概念，以下代码则有效:
 
 \begin{cpp}
-void foo(InP inPos, OutP, outPos) {
+void foo(InP inPos, OutP outPos) {
 	OutP::value_type tmp = std::move(*inPos);
 	*outPos = std::move(tmp);
 }
@@ -556,7 +556,7 @@ std::projected<P1, Proj1>和std::projected<P2, Proj2>满足std::identity为默�
 
 \begin{itemize}
 \item
-保证Pos是一个输出迭代器(可以为元素赋值的迭代器)，可以为其赋类型为typeT的值。
+保证Pos是一个输出迭代器(可以为元素赋值的迭代器)，可以为其赋类型为type T的值。
 
 \item
 Pos类型的迭代器可用于赋值T类型的值val:
@@ -575,7 +575,7 @@ Pos类型的迭代器可用于赋值T类型的值val:
 满足std::input\_or\_output\_iterator<Pos>
 
 \item
-满足std::indirectly\_writable<Pos, I>
+满足std::indirectly\_writable<Pos, T>
 \end{itemize}
 \end{itemize}
 

@@ -5,7 +5,7 @@ C++20提供了对所有计时类型的直接输出和解析的新支持。
 
 对于所有的chrono类型，标准输出操作符从C++20开始定义。不仅输出值，而且使用适当的格式和单位，依赖于地区的格式化也是可能的。
 
-所有日历类型都会输出出带有日历类型输出格式的值。
+所有日历类型都会输出带有日历类型输出格式的值。
 
 所有时间段类型都以单位类型输出值，如表中时间段的输出单位所示，这适用于任何字面符操作符。
 
@@ -105,7 +105,7 @@ sys\_info和local\_info具有未定义格式的输出操作符，只用于调试
 
 \mySubsubsection{11.4.2}{格式化输出}
 
-Chrono支持格式化输出的新库，所以可以对std::format()和std::format\_to()的参数使用日期/时间类型。
+chrono支持格式化输出的新库，所以可以对std::format()和std::format\_to()的参数使用日期/时间类型。
 
 例如:
 
@@ -205,7 +205,7 @@ std::cout << std::format("{:%H:%M:%S}", -10000s); // outputs: -02:46:40
 \multicolumn{1}{|l|}{\%x}            & \multicolumn{1}{l|}{06/09/19}          & 表示标准或地区的日期                        \\ \hline
 \multicolumn{1}{|l|}{\%F}            & \multicolumn{1}{l|}{2019-06-09}        & 年-月-日，四位和两位数字                         \\ \hline
 \multicolumn{1}{|l|}{\%D}            & \multicolumn{1}{l|}{06/09/19}          & 两位数的月/日/年                                  \\ \hline
-\multicolumn{1}{|l|}{\%e}            & \multicolumn{1}{l|}{9}                 & 个位数时，以空格开头的日期                          \\ \hline
+\multicolumn{1}{|l|}{\%e}            & \multicolumn{1}{l|}{ 9}                & 个位数时，以空格开头的日期                          \\ \hline
 \multicolumn{1}{|l|}{\%d}            & \multicolumn{1}{l|}{09}                & 两位数的日期                                                \\ \hline
 \multicolumn{1}{|l|}{\%b}            & \multicolumn{1}{l|}{Jun}               & 标准或地区的缩写月名                     \\ \hline
 \multicolumn{1}{|l|}{\%h}            & \multicolumn{1}{l|}{Jun}               & 同上                                                              \\ \hline
@@ -317,7 +317,7 @@ std::cout.imbue(locG); // switch to German locale
 std::cout << dur << '\n'; // 42,2ms
 \end{cpp}
 
-std::format()格式化的输出像往常一样处理:[此行为指定为C++20的一个错误修复，使用\url{http://wg21.link/p2372}，从而C++20的原始措辞没有指定此行为。]
+std::format()格式化的输出像往常一样处理:[此行为指定为C++20的一个错误修复，使用\url{http://wg21.link/p2372}，这意味着C++20的原始措辞没有指定此行为。]
 
 \begin{itemize}
 \item

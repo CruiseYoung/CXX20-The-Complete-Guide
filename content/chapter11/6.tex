@@ -56,7 +56,7 @@ std::chrono::get\_tzdb\_list()产生对时区数据库的引用，该数据库�
 它是一个时区数据库列表，能够并行支持多个版本的时区数据库。
 
 \item
-std::chrono::get\_tzdb()产生对Std::chrono::tzdb类型的当前时区数据库的引用。该类型有以下多个成员:
+std::chrono::get\_tzdb()产生对std::chrono::tzdb类型的当前时区数据库的引用。该类型有以下多个成员:
 
 \begin{itemize}
 \item
@@ -121,10 +121,10 @@ std::chrono::locate\_zone(name) 生成一个指向时区名称的指针。
 
 \begin{itemize}
 \item
-成员区域拥有所有规范。
+成员zones拥有所有规范条目。
 
 \item
-成员链接拥有所有带有链接的别名。
+成员links拥有所有带有指向它们的链接的别名条目。
 \end{itemize}
 
 可以使用根据诸如缩写名称之类的特征来查找时区。
@@ -281,7 +281,7 @@ std::cout << "NY timeFromLoc: "
 输出结果如下:
 
 \begin{shell}
-Y sysTp:        2021-04-13 09:40:02 EDT
+NY sysTp:       2021-04-13 09:40:02 EDT
 NY locTP:       2021-04-13 13:40:02 EDT
 NY timeFromSys: 2021-04-13 09:40:02 EDT
 NY timeFromLoc: 2021-04-13 07:40:02 EDT

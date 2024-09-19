@@ -760,7 +760,7 @@ std::ranges::subrange rawStringRange{rawString, NullTerm{}};
 std::ranges::for_each(rawStringRange, ... ); // OK
 \end{cpp}
 
-子范围并不总是通用范围，对它们调用begin()和end()可能会产生不同的类型，子范围只产生传递定义范围的内容。
+注意，子范围并不总是通用范围，对它们调用begin()和end()可能会产生不同的类型，子范围只产生传递定义范围的内容。
 
 即使子范围不是公共范围，也可以将其传递给基于范围的for循环。基于范围的for循环接受开始迭代器和哨兵(结束迭代器)类型不同的范围(该特性已经在C++17中引入，但是对于范围和视图):
 

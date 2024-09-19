@@ -23,8 +23,7 @@ final\_suspend()         & 最终挂起点(让协程惰性结束)     \\ \hline
 await\_transform(...)    & 将值从co\_await映射到awaiter                   \\ \hline
 operator new(sz)         & 定义协程分配内存的方式           \\ \hline
 operator delete(ptr, sz) & 定义协程释放内存的方式               \\ \hline
-\begin{tabular}[c]{@{}l@{}}get\_return\_object\_on\_...\\ ...allocation\_failure()\end{tabular} &
-定义内存分配失败时的反应 \\ \hline
+\begin{tabular}[c]{@{}l@{}}get\_return\_object\_on\_allocation\_failure()\end{tabular} &定义内存分配失败时的反应 \\ \hline
 \end{longtable}
 
 \begin{center}
@@ -47,7 +46,7 @@ operator delete(ptr, sz) & 定义协程释放内存的方式               \\ \h
 
 get\_return\_object()由协程框架用于创建协程的返回值。
 
-该函数通常必须返回协程接口，该接口由协程句柄初始化，而协程句柄通常from\_promise()中的静态协程句柄成员函数初始化，该函数本身由promise初始化。
+该函数通常必须返回协程接口，该接口由协程句柄初始化，协程句柄通常使用静态协程句柄成员函数from\_promise()进行初始化，而该函数本身由promise初始化。
 
 例如:
 
@@ -163,7 +162,7 @@ class CoroTask {
 
 \mySamllsection{unhandled\_exception()}
 
-或unhandled\_exception()定义协程抛出异常时的反应，该函数在协程框架的catch子句中调用。
+unhandled\_exception()定义协程抛出异常时的反应，该函数在协程框架的catch子句中调用。
 
 对异常的可能反应如下所示:
 
@@ -206,7 +205,7 @@ class CoroTask {
 \item
 \textbf{return\_value(Type)}
 
-当协程到达带有参数的co\_return语句时调用，传递的参数必须或必须转换为指定的类型。
+当协程到达带有参数的co\_return语句时调用，传递的参数必须为指定类型或必须转换为指定类型。
 
 有关详细信息，请参阅带有co\_return的协程示例。
 \end{itemize}

@@ -115,7 +115,7 @@ for (const auto& elem : lst | std::views::drop(3)) { // OK
 print(vec | std::views::filter(isEven)); // ERROR
 \end{cpp}
 
-\mySamllsection{const\&并不适用于所有视图}
+\mySamllsection{将范围参数声明为const\&对于某些视图不起作用}
 
 这种非常奇怪和意外的行为的原因是，当视图为const时，视图并不总是支持遍历元素。这是这样一个事实的结果:迭代这些视图的元素有时需要能够修改视图的状态(例如，由于缓存)。对于某些视图(如过滤器视图)永远不会工作，对于某些视图(例如drop视图)，只是有时会起作用。
 
@@ -178,23 +178,23 @@ namespace std::ranges {
 若将形参声明为const引用，则无法提供可以处理所有范围和视图元素的泛型函数。
 
 \begin{cpp}
-void print(const auto& coll); // not callable for all views
+void print(const auto& coll); // not callable for some views
 
 template<typename T>
-void foo(const T& coll); // not callable for all views
+void foo(const T& coll); // not callable for some views
 \end{cpp}
 
 是否对范围参数的类型有约束并不重要:
 
 \begin{cpp}
-void print(const std::ranges::input_range auto& coll); // not callable for all views
+void print(const std::ranges::input_range auto& coll); // not callable for some views
 
 template<std::ranges::random_access_range T>
-void foo(const T& coll); // not callable for all views
+void foo(const T& coll); // not callable for some views
 \end{cpp}
 
 
-\mySamllsection{非const\&\&对所有视图都有效}
+\mySamllsection{将范围形参声明为Non-const\&\&}
 
 为了在泛型代码中支持这些视图，应该将范围参数声明为通用引用(也称为转发引用)。这些引用可以引用所有表达式，同时保留引用对象不是const的事实[C++标准中，通用引用称为转发引用，但在std::forward<>()调用之前并不真正的转发，并且完美转发并不总是使用这些引用的原因(如本例所示)]。例如:
 

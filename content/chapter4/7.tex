@@ -264,7 +264,7 @@ template<typename T, typename U>
 concept SameAs = SameAsHelper<T, U> && SameAsHelper<U, T>; // make commutative
 \end{cpp}
 
-对于IsSame<>，参数的顺序不再重要:
+对于SameAs<>，参数的顺序不再重要:
 
 \begin{cpp}
 template<typename T, typename U>

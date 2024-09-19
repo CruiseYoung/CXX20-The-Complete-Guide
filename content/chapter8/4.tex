@@ -99,7 +99,7 @@ int main()
 	std::ranges::iota_view iv2{10, 20}; // 10 11 12 ... 19
 	print(iv2);
 	
-	auto iv3 = std::views::iota(1); // -2 -1 0 1 ...
+	auto iv3 = std::views::iota(1); // 1 2 3 4 ...
 	print(iv3);
 	
 	auto iv4 = std::views::iota('a', 'z'+1); // a b c ... z
@@ -1022,7 +1022,7 @@ auto v = std::views::counted(vec.begin()+1, 3); // span with 2nd to 4th elem of 
 
 \mySamllsection{span的特点}
 
-迭代器不指向span。相反，其引用底层元素，所以span是一个租借范围。但当底层字符序列不再存在时，迭代器仍然可以悬空。
+迭代器不指向span。相反，其引用底层元素，所以span是一个租借范围。但当底层元素序列不再存在时，迭代器仍然可以悬空。
 
 \mySamllsection{span的特定视图接口}
 

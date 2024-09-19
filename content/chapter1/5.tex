@@ -38,7 +38,7 @@ struct Value {
 	T val{};
 	...
 	std::compare_three_way_result_t<T,T>
-		operator<=> (const Value& v) const noexcept(noexcept(val<=>val));
+		operator<=> (const Value& v) const noexcept(noexcept(val, v.val));
 };
 \end{cpp}
 

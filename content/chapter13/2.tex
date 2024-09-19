@@ -36,7 +36,7 @@ int main()
 	// initialize a queue with multiple sequences from ’a’ to ’z’:
 	// - no mutex because no other thread is running yet
 	for (int i = 0; i < 1000; ++i) {
-		values.push(static_cast<char>('a' + (i % ('z'-'a'))));
+		values.push(static_cast<char>('a' + (i % ('z'-'a' + 1))));
 	}
 
 	// create a pool of numThreads threads:

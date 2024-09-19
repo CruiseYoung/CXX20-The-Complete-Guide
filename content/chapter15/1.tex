@@ -38,7 +38,7 @@ auto coro = [] (int max) -> CoroTask {
 };
 \end{cpp}
 
-但请注意协程Lambda不应该捕获任何内容。这是因为Lambda是定义函数对象的快捷方式，该对象在定义Lambda的作用域中创建。当离开该作用域时，协程Lambda可能仍然会恢复，这是Lambda对象已销毁了。
+但请注意协程Lambda不应该捕获任何内容。这是因为Lambda是定义函数对象的快捷方式，该对象在定义Lambda的作用域中创建。当离开该作用域时，协程Lambda可能仍然会恢复，即使这时Lambda对象已销毁了。
 
 下面是一个导致致命运行时错误的代码示例:
 

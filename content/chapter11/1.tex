@@ -144,9 +144,9 @@ auto first = 2021y/1/5;
 还有其他方法可以初始化日历类型，如year\_month\_day:
 
 \begin{cpp}
-auto d1 = std::chrono::years{2021}/1/5; // January 5, 2021
-auto d2 = std::chrono:month{1}/5/2021; // January 5, 2021
-auto d3 = std::chrono:day{5}/1/2021; // January 5, 2021
+auto d1 = std::chrono::year{2021}/1/5; // January 5, 2021
+auto d2 = std::chrono::month{1}/5/2021; // January 5, 2021
+auto d3 = std::chrono::day{5}/1/2021; // January 5, 2021
 \end{cpp}
 
 操作符/的第一个参数的类型指定了如何解释其他参数。
@@ -156,7 +156,7 @@ auto d3 = std::chrono:day{5}/1/2021; // January 5, 2021
 \begin{cpp}
 using namespace std::literals;
 auto d4 = 2021y/1/5; // January 5, 2021
-auto d5 = 5/1/2021; // January 5, 2021
+auto d5 = 5d/1/2021; // January 5, 2021
 \end{cpp}
 
 没有月的标准后缀，但有预定义的标准对象:
@@ -219,13 +219,13 @@ std::cout << "d: " << d << '\n';
 对于用户定义的输出，chrono库还支持用于格式化输出的新库。稍后会使用它来输出时间点tp:
 
 \begin{cpp}
-std::cout << std::format("We meet on {:%D at %R}\n", tp);
+std::cout << std::format("We meet on {:%A %D at %R}\n", tp);
 \end{cpp}
 
 格式化说明符，\%A表示工作日，\%D表示日期，\%R表示时间(小时和分钟)，与C函数strftime()和POSIX date命令的说明符对应，因此输出可能如下所示:
 
 \begin{shell}
-We meet on 10/05/21 at 18:30
+We meet on Saturday 05/01/21 at 18:30
 \end{shell}
 
 还支持特定于语言环境的输出，稍后将详细描述chrono类型的格式化输出。
@@ -283,7 +283,7 @@ chr::sys_seconds tp{chr::sys_days{d} + 18h + 30min};
 默认输出操作符根据上述指定的格式输出时间点。例如:
 
 \begin{shell}
-We meet on 10/05/21 at 18:30
+We meet on Saturday 05/01/21 at 18:30
 \end{shell}
 
 注意，处理系统时间时，默认输出是UTC。
@@ -324,7 +324,7 @@ int main()
 auto first = 2021y / 1 / chr::last;
 \end{cpp}
 
-类型std::chrono::last不仅表示一个月的最后一天，还表示first具有不同的类型:std::chrono::year\_month\_day\_last。通过增加一个月，日期的日期得到了调整。实际上，该类型总是保存最后一天。当输出日期并指定相应的输出格式时，就会发生向数字日期的转换。
+类型std::chrono::last不仅表示一个月的最后一天，还表示first具有不同的类型std::chrono::year\_month\_day\_last。通过增加一个月，日期的日得到了调整。实际上，该类型总是保存最后一天。当输出日期并指定相应的输出格式时，就会发生向数字日期的转换。
 
 结果，输出为以下内容:
 
@@ -363,7 +363,7 @@ for (auto d = first; d.year() == first.year(); d += chr::months{1}) {
 
 	// init and print 18:30 UTC of those days:
 	auto tp{chr::sys_days{d} + 18h + 30min};
-	std::cout << std::format(" We meet on {:%D at %R}\n", tp);
+	std::cout << std::format(" We meet on {:%A %D at %R}\n", tp);
 }
 \end{cpp}
 
@@ -688,7 +688,7 @@ timepoint: 2021-01-04 18:30:00
 zonedtime: 2021-01-04 18:30:00 CET
 \end{shell}
 
-输出的时间点没有时区，而经过时区处理的时间有时区。但两个输出输出的时间相同，因为我们将本地时间点使用的是本地时区。
+输出的时间点没有时区，而经过时区处理的时间有时区。但两个输出的时间相同，因为我们将本地时间点使用的是本地时区。
 
 事实上，时间点和分区时间的区别如下:
 

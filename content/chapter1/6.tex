@@ -59,9 +59,11 @@ class MyType {
 但C++20之前，这只允许对第二个操作数进行隐式类型转换，所以类或其他代码引入了一个全局操作符来交换参数的顺序:
 
 \begin{cpp}
+#ifndef __cpp_impl_three_way_comparison
 bool operator==(int i, const MyType& t) {
-	return t == i; // OK until C++17
+  return t == i; // OK with C++17
 }
+#endif
 \end{cpp}
 
 对于类来说，最好将operator==()定义为“隐藏的友元”(在类结构中使用友元定义它，以便两个操作符都成为参数，可以直接访问成员，并且只有在至少有一个参数类型适合时才执行隐式类型转换)，但上面的代码在C++20之前具有相同的效果。
@@ -90,6 +92,15 @@ bool operator==(int i, const MyType& t) {
 
 \item
 新特性可用时，使用特性测试宏来禁用代码:
+
+\begin{cpp}
+#ifndef __cpp_impl_three_way_comparison
+bool operator==(int i, const MyType& t) {
+  return t == i; // OK with C++17
+}
+#endif
+\end{cpp}
+
 \end{itemize}
 
 \mySubsubsection{1.6.2}{protected成员的继承}
