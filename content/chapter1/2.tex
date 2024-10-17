@@ -105,7 +105,7 @@ std::partial\_ordering::unordered
 \end{itemize}
 \end{itemize}
 
-注意，所有类型都有less、greater和equivalent值。但strong\_ordering也有equal，这与这里的equal相同，而partial\_ordering的值为unordered，既不表示小于，等于和大于。
+注意，所有类型都有less、greater和equivalent值。但strong\_ordering也有equal，这与这里的equivalent相同，而partial\_ordering的值为unordered，既不表示小于，等于和大于。
 
 较强比较类型具有向较弱比较类型的隐式类型转换，可以将strong\_ordering值用作weak\_ordering值，或partial\_ordering值(相等则为equivalent)。
 

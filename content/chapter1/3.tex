@@ -18,7 +18,7 @@
 %
 \endhead
 %
-strong\_order()                   & 映射到强序值也适用于浮点值 \\ \hline
+strong\_order()                   & 映射到强序值，也适用于浮点值 \\ \hline
 weak\_order()                     & 映射到弱序值，也适用于浮点值   \\ \hline
 partial\_order()                  & 映射到偏序值                               \\ \hline
 compare\_strong\_order\_fallback()  & 映射到强序值，即使只定义了==和<操作符  \\ \hline
@@ -220,4 +220,4 @@ d1 != d2; // OK (note: only tries operator<=> and B::operator== of a base class)
 
 相等性检查总是只使用基类的操作符==(但可以根据默认操作符<=>生成)，可忽略基类中的<或!=运算符。
 
-同样地，若D中有B类型的成员。
+如果D有类型B的成员，则同样适用。

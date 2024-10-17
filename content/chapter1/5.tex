@@ -22,7 +22,7 @@ template<typename T>
 struct Value {
 	T val{};
 	...
-	auto operator<=> (const Value& v) const noexcept(noexcept(val<=>val)) {
+	auto operator<=> (const Value& v) const noexcept(noexcept(val<=>v.val)) {
 		return std::compare_three_way{}(val<=>v.val);
 	}
 };
